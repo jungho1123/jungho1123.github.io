@@ -245,7 +245,7 @@ defaults:
       path: ""
       type: posts
     values:
-      layout: single
+      layout: post
       author_profile: true
       read_time: true
       comments: true
@@ -257,7 +257,7 @@ defaults:
       path: ""
       type: ja_posts
     values:
-      layout: single
+      layout: post
       author_profile: true
       read_time: true
       comments: true
