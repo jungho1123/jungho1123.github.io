@@ -355,3 +355,41 @@ compress_html:
   clippings: all
   ignore:
     envs: development
+# _config.yml 파일 하단에 추가
+
+# -------------------------------------------------------------------
+# 다국어 설정 (i18n)
+# -------------------------------------------------------------------
+
+# 1. 지원할 언어 목록을 정의합니다.
+# 첫 번째 언어가 기본 언어가 됩니다. (여기서는 'ko')
+languages: ["ko", "ja"]
+
+# 2. 다국어 포스트를 관리하기 위해 'collections'를 사용합니다.
+# Jekyll이 _posts 폴더를 기본으로 처리하는 방식을 덮어쓰고,
+# 언어별로 별도의 컬렉션처럼 관리하게 만듭니다.
+collections:
+  posts:
+    output: true
+    permalink: /:categories/:title/
+  ja_posts:
+    output: true
+    permalink: /ja/:categories/:title/
+
+# 3. 기본값(defaults) 설정
+# 어떤 폴더에 있는 파일에 어떤 기본값을 적용할지 설정합니다.
+defaults:
+  -
+    scope:
+      path: "_posts" # _posts 폴더에 있는 파일들
+      type: "posts"
+    values:
+      lang: "ko" # lang을 'ko'로 기본 설정
+  -
+    scope:
+      path: "_ja_posts" # _ja_posts 폴더에 있는 파일들
+      type: "ja_posts"
+    values:
+      lang: "ja" # lang을 'ja'로 기본 설정
+      
+# -------------------------------------------------------------------
