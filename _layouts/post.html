@@ -13,7 +13,18 @@
 <div id="main" role="main">
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     {% if page.title %}<h1 class="page__title" itemprop="headline">{{ page.title | markdownify | remove: "<p>" | remove: "</p>" }}</h1>{% endif %}
-
+    <div style="border: 2px solid red; padding: 10px; margin: 20px 0; background-color: #ffeeee;">
+  <p><b>[디버깅 정보]</b></p>
+  <p><b>현재 페이지 언어 (page.lang):</b> {{ page.lang }}</p>
+  <p><b>현재 페이지 REF (page.ref):</b> {{ page.ref }}</p>
+  <hr>
+  <p><b>site.posts 에서 찾는 중... (총 {{ site.posts | size }}개)</b></p>
+  <ul>
+    {% for p in site.posts %}
+      <li>"{{ p.title }}" (REF: {{ p.ref }})</li>
+    {% endfor %}
+  </ul>
+</div>
     <div style="margin-bottom: 20px;">
   {% comment %} 현재 페이지의 ref 값이 있는지 먼저 확인합니다. {% endcomment %}
   {% if page.ref %}
