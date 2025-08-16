@@ -217,7 +217,6 @@ kramdown:
 
 # These settings control the types of collections used by the template
 collections:
-  
   posts:
     output: true
     permalink: /:categories/:title/ # 한국어 포스트 URL 구조
