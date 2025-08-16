@@ -217,7 +217,7 @@ kramdown:
 
 # These settings control the types of collections used by the template
 collections:
-  # ✨ 1. posts 컬렉션을 명시적으로 추가하고, ja_posts를 새로 추가합니다.
+  
   posts:
     output: true
     permalink: /:categories/:title/ # 한국어 포스트 URL 구조
@@ -245,25 +245,25 @@ defaults:
       path: ""
       type: posts
     values:
-      layout: post
+      layout: single
       author_profile: true
       read_time: true
       comments: true
       share: true
       related: true
-      lang: "ko" # ✨ 2. 한국어 포스트에 lang: "ko" 기본값 추가
-  # _ja_posts (✨ 3. 일본어 포스트를 위한 새로운 기본값 추가)
+      navigation: "default" # 한국어 포스트는 기본 navigation.yml 사용
+  # _ja_posts (이 부분을 새로 추가하세요)
   - scope:
       path: ""
       type: ja_posts
     values:
-      layout: post
+      layout: single
       author_profile: true
       read_time: true
       comments: true
       share: true
       related: true
-      lang: "ja"
+      navigation: "ja" # 일본어 포스트는 navigation_ja.yml 사용
   # _pages
   - scope:
       path: ""
@@ -271,40 +271,21 @@ defaults:
     values:
       layout: single
       author_profile: true
-  # _teaching
-  - scope:
-      path: ""
-      type: teaching
-    values:
-      layout: single
-      author_profile: true
-      share: true
-      comments: true
-  # _publications
-  - scope:
-      path: ""
-      type: publications
-    values:
-      layout: single
-      author_profile: true
-      share: true
-      comments: true
   # _portfolio
   - scope:
       path: ""
       type: portfolio
     values:
       layout: single
-      author_profile: true
+      author_profile: false
       share: true
-      comment: true
-  # _talks
+  # _publications
   - scope:
       path: ""
-      type: talks
+      type: publications
     values:
-      layout: talk
-      author_profile: true
+      layout: single
+      author_profile: false
       share: true
 
 

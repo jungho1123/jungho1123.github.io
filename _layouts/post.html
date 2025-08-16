@@ -1,42 +1,77 @@
-{% raw %}
----
-layout: single
----
-
-{# 언어 전환 버튼: ref 값이 있는 포스트에서만 나타납니다. #}
-{% if page.ref %}
-  {% assign current_lang = page.lang %}
-  {% assign posts = site.posts | concat: site.ja_posts %}
-  {% assign translations = "" | split: "," %}
-
-  {% for post in posts %}
-    {% if post.ref == page.ref and post.lang != current_lang %}
-      {% assign translations = translations | push: post %}
-    {% endif %}
-  {% endfor %}
-
-  {% if translations.size > 0 %}
-    <div class="lang-switcher" style="margin-bottom: 1.5em; border: 1px solid #e8e8e8; padding: 10px; border-radius: 5px; background: #f7f7f7;">
-      <strong>Other languages: </strong>
-    {% for t in translations %}
-      {% if t.lang == 'ja' %}
-        <a href="{{ t.url | relative_url }}" lang="ja">日本語 🇯🇵</a>
-      {% elsif t.lang == 'ko' %}
-        <a href="{{ t.url | relative_url }}" lang="ko">한국어 🇰🇷</a>
-      {% endif %}
-    {% endfor %}
-    </div>
-  {% endif %}
+{% if page.header.overlay_color or page.header.overlay_image or page.header.image %}
+  {% include page__hero.html %}
+{% elsif page.header.video.id and page.header.video.provider %}
+  {% include page__hero_video.html %}
 {% endif %}
 
-{# Minimal Mistakes 테마의 원본 콘텐츠 영역입니다. #}
-<div class="initial-content">
-  {{ content }}
-</div>
-
-{% if site.data.ui-text[site.locale].related_label | default: "You May Also Enjoy" %}
-  {% unless page.related == false %}
-    {% include related-posts.html %}
+{% if page.url != "/" and site.breadcrumbs %}
+  {% unless paginator %}
+    {% include breadcrumbs.html %}
   {% endunless %}
 {% endif %}
-{% endraw %}
+
+<div id="main" role="main">
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    {% if page.title %}<h1 class="page__title" itemprop="headline">{{ page.title | markdownify | remove: "<p>" | remove: "</p>" }}</h1>{% endif %}
+
+    <div style="margin-bottom: 20px;">
+  {% comment %} 현재 페이지의 ref 값이 있는지 먼저 확인합니다. {% endcomment %}
+  {% if page.ref %}
+    {% if page.lang == 'ko' %}
+      {% assign ja_post = site.ja_posts | where: "ref", page.ref | first %}
+      {% if ja_post %}
+        <a href="{{ ja_post.url | relative_url }}" class="btn btn--inverse">日本語で読む</a>
+      {% endif %}
+    {% elsif page.lang == 'ja' %}
+      {% assign ko_post = site.posts | where: "ref", page.ref | first %}
+      {% if ko_post %}
+        <a href="{{ ko_post.url | relative_url }}" class="btn btn--inverse">한국어로 읽기</a>
+      {% endif %}
+    {% endif %}
+  {% endif %}
+</div>
+    <div class="page__inner-wrap">
+      {% unless page.header.overlay_color or page.header.overlay_image %}
+        <header>
+          {% if page.read_time %}
+            <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> {% include read-time.html %}</p>
+          {% endif %}
+        </header>
+      {% endunless %}
+
+      <section class="page__content" itemprop="text">
+        {{ content }}
+        {% if page.link %}<div><a href="{{ page.link }}" class="btn btn--primary">{{ site.data.ui-text[site.locale].ext_link_label | default: "Direct Link" }}</a></div>{% endif %}
+      </section>
+
+      <footer class="page__meta">
+        {% if page.last_modified_at %}
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> {{ site.data.ui-text[site.locale].date_label | default: "Updated:" }}</strong> <time datetime="{{ page.last_modified_at | date_to_xmlschema }}">{{ page.last_modified_at | date: "%B %d, %Y" }}</time></p>
+        {% elsif page.date %}
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> {{ site.data.ui-text[site.locale].date_label | default: "Updated:" }}</strong> <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %d, %Y" }}</time></p>
+        {% endif %}
+      </footer>
+
+      {% if page.share %}{% include social-share.html %}{% endif %}
+
+      {% include post_pagination.html %}
+    </div>
+
+    {% if site.comments.provider and page.comments %}
+      {% include comments.html %}
+    {% endif %}
+
+    {% if page.related %}
+      <div class="page__related">
+        <h4 class="page__related-title">{{ site.data.ui-text[site.locale].related_label | default: "You May Also Enjoy" }}</h4>
+        <div class="grid__wrapper">
+          {% for post in site.related_posts limit:4 %}
+            {% include archive-single.html type="grid" %}
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+  </article>
+
+</div>
