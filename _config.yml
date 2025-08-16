@@ -217,6 +217,13 @@ kramdown:
 
 # These settings control the types of collections used by the template
 collections:
+  # ✨ 1. posts 컬렉션을 명시적으로 추가하고, ja_posts를 새로 추가합니다.
+  posts:
+    output: true
+    permalink: /:categories/:title/ # 한국어 포스트 URL 구조
+  ja_posts:
+    output: true
+    permalink: /ja/:categories/:title/ # 일본어 포스트 URL 구조
   teaching:
     output: true
     permalink: /:collection/:path/
@@ -244,6 +251,19 @@ defaults:
       comments: true
       share: true
       related: true
+      lang: "ko" # ✨ 2. 한국어 포스트에 lang: "ko" 기본값 추가
+  # _ja_posts (✨ 3. 일본어 포스트를 위한 새로운 기본값 추가)
+  - scope:
+      path: ""
+      type: ja_posts
+    values:
+      layout: single
+      author_profile: true
+      read_time: true
+      comments: true
+      share: true
+      related: true
+      lang: "ja"
   # _pages
   - scope:
       path: ""
@@ -368,28 +388,6 @@ languages: ["ko", "ja"]
 # 2. 다국어 포스트를 관리하기 위해 'collections'를 사용합니다.
 # Jekyll이 _posts 폴더를 기본으로 처리하는 방식을 덮어쓰고,
 # 언어별로 별도의 컬렉션처럼 관리하게 만듭니다.
-collections:
-  posts:
-    output: true
-    permalink: /:categories/:title/
-  ja_posts:
-    output: true
-    permalink: /ja/:categories/:title/
 
-# 3. 기본값(defaults) 설정
-# 어떤 폴더에 있는 파일에 어떤 기본값을 적용할지 설정합니다.
-defaults:
-  -
-    scope:
-      path: "_posts" # _posts 폴더에 있는 파일들
-      type: "posts"
-    values:
-      lang: "ko" # lang을 'ko'로 기본 설정
-  -
-    scope:
-      path: "_ja_posts" # _ja_posts 폴더에 있는 파일들
-      type: "ja_posts"
-    values:
-      lang: "ja" # lang을 'ja'로 기본 설정
       
 # -------------------------------------------------------------------
